@@ -1,72 +1,41 @@
-FROM node:20-bullseye
+# Step 1: Use an official Gradle image with JDK 17 as the base
+FROM gradle:8.2-jdk17 AS builder
 
-# Install Java 17 and required tools
+USER root
 
-RUN apt-get update && apt-get install -y 
-openjdk-17-jdk 
-wget 
-unzip 
-git 
-curl && 
-rm -rf /var/lib/apt/lists/*
+# Step 2: Install required system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    unzip \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
-# Java Environment
-
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-ENV PATH="${JAVA_HOME}/bin:${PATH}"
-
-# Android SDK Configuration
-
+# Step 3: Set environment variables for Android SDK
 ENV ANDROID_HOME=/opt/android-sdk
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
+ENV PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
 
-RUN mkdir -p ${ANDROID_HOME}/cmdline-tools
+# Step 4: Download and extract Android Command-line Tools (Latest stable)
+# Note: You can replace the version number with a specific one if needed
+ARG CMD_LINE_VERSION=11076708
+RUN mkdir -p ${ANDROID_HOME}/cmdline-tools \
+    && curl -sS https://google.com{CMD_LINE_VERSION}_latest.zip -o /tmp/cmdline.zip \
+    && unzip -q /tmp/cmdline.zip -d ${ANDROID_HOME}/cmdline-tools \
+    && mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest \
+    && rm /tmp/cmdline.zip
 
-WORKDIR /tmp
+# Step 5: Accept Android SDK Licenses automatically
+RUN yes | sdkmanager --licenses
 
-# Download Android Command Line Tools
+# Step 6: Install required Android platform tools and build targets
+# Customize these versions according to your project's compileSdkVersion and buildToolsVersion
+RUN sdkmanager "platform-tools" \
+               "platforms;android-34" \
+               "build-tools;34.0.0"
 
-RUN wget -O commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip && 
-unzip commandlinetools.zip && 
-mkdir -p ${ANDROID_HOME}/cmdline-tools/latest && 
-mv cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
-
-# Android SDK PATH
-
-ENV PATH="${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools"
-
-# Accept Android Licenses
-
-RUN yes | sdkmanager --licenses || true
-
-# Install Android SDK Packages
-
-RUN sdkmanager 
-"platform-tools" 
-"platforms;android-34" 
-"build-tools;34.0.0"
-
-# Install Gradle 8.2
-
-RUN wget https://services.gradle.org/distributions/gradle-8.2-bin.zip -O /tmp/gradle.zip && 
-unzip /tmp/gradle.zip -d /opt/gradle
-
-ENV GRADLE_HOME=/opt/gradle/gradle-8.2
-ENV PATH="${PATH}:${GRADLE_HOME}/bin"
-
-# Verify installations
-
-RUN java -version
-RUN gradle --version
-
-# Application
-
+# Step 7: Set workspace and build project
 WORKDIR /app
-
 COPY . .
 
-RUN npm install
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
+# Run your Gradle build (e.g., assembly of release or debug APK)
+RUN gradle assembleRelease --no-daemon
