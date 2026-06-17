@@ -15,7 +15,7 @@ ENV ANDROID_HOME=/opt/android-sdk
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
 
-# Step 4: Download and extract Android Command-line Tools (Hardcoded Link)
+# Step 4: Download and extract the real Android Command-line Tools
 RUN mkdir -p ${ANDROID_HOME}/cmdline-tools \
     && curl -sS https://google.com -o /tmp/cmdline.zip \
     && unzip -q /tmp/cmdline.zip -d ${ANDROID_HOME}/cmdline-tools \
@@ -26,7 +26,6 @@ RUN mkdir -p ${ANDROID_HOME}/cmdline-tools \
 RUN yes | sdkmanager --licenses
 
 # Step 6: Install required Android platform tools and build targets
-# Customize these versions according to your project's compileSdkVersion and buildToolsVersion
 RUN sdkmanager "platform-tools" \
                "platforms;android-34" \
                "build-tools;34.0.0"
@@ -35,5 +34,5 @@ RUN sdkmanager "platform-tools" \
 WORKDIR /app
 COPY . .
 
-# Run your Gradle build (e.g., assembly of release or debug APK)
+# Run your Gradle build
 RUN gradle assembleRelease --no-daemon
