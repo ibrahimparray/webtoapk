@@ -1,14 +1,12 @@
 FROM node:20-bullseye
 
-# Install Java 17 and required tools
-
-RUN apt-get update && apt-get install -y 
-openjdk-17-jdk 
-wget 
-unzip 
-git 
-curl && 
-rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    openjdk-17-jdk \
+    wget \
+    unzip \
+    git \
+    curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Java Environment
 
