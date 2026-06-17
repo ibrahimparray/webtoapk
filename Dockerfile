@@ -15,8 +15,7 @@ ENV ANDROID_HOME=/opt/android-sdk
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
 
-# Step 4: Download and extract Android Command-line Tools (Latest stable)
-# Note: You can replace the version number with a specific one if needed
+# Step 4: Download and extract Android Command-line Tools (Fixed URL)
 ARG CMD_LINE_VERSION=11076708
 RUN mkdir -p ${ANDROID_HOME}/cmdline-tools \
     && curl -sS https://google.com{CMD_LINE_VERSION}_latest.zip -o /tmp/cmdline.zip \
