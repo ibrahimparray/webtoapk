@@ -23,33 +23,33 @@ RUN mkdir -p ${ANDROID_HOME}/cmdline-tools && \
     rm /tmp/cmdline-tools.zip
 
 # 3. Automatically accept all Android SDK Licenses
-RUN yes | sdkmanager --licenses
+RUN yes | /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
 
 # 4. Install specific required Android Build Tools and Platform SDK
-RUN sdkmanager "platforms;android-34" "build-tools;34.0.0"
+RUN /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
 # Set up the working directory inside the container
 WORKDIR /app
 
 # Copy package management files and install production dependencies
-# Copy package management files and install production dependencies
 COPY package*.json ./
 RUN npm install --omit=dev
 
-# Copy the rest of your application code
+# Copy all repository files into the container
 COPY . .
 
+# 🚀 MOVE INTO THE BACKEND DIRECTORY WHERE SERVER.JS LIVES
+WORKDIR /app/backend
+
 # 5. FIX THE BINARY FAILURE: Download the physical gradle-wrapper.jar dynamically
-RUN mkdir -p android-template/gradle/wrapper && \
-    curl -sS -L https://raw.githubusercontent.com/gradle/gradle/v8.5.0/gradle/wrapper/gradle-wrapper.jar -o android-template/gradle/wrapper/gradle-wrapper.jar
+RUN mkdir -p ../android-template/gradle/wrapper && \
+    curl -sS -L https://raw.githubusercontent.com/gradle/gradle/v8.5.0/gradle/wrapper/gradle-wrapper.jar -o ../android-template/gradle/wrapper/gradle-wrapper.jar
 
 # 6. Set explicit global execution permissions for Linux environment
-RUN chmod +x android-template/gradlew
+RUN chmod +x ../android-template/gradlew
 
 # Expose the port your Express server listens on
 EXPOSE 10000
 
-# Start the application
-#CMD ["npm", "run", "server"]
-# Temporary command to inspect your repository structure in Render logs
-CMD ["ls", "-R"]
+# Boot the app directly using Node from inside the backend folder
+CMD ["node", "server.js"]
