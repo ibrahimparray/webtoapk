@@ -50,4 +50,6 @@ RUN chmod +x android-template/gradlew
 EXPOSE 10000
 
 # Start the application
-CMD ["npm", "run", "server"]
+#CMD ["npm", "run", "server"]
+# Temporary command to inspect your repository structure in Render logs
+CMD ["ls", "-R"]
