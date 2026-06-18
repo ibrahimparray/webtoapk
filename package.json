@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "server": "node server/index.js"
   },
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "fs-extra": "^11.2.0",
     "multer": "^2.2.0",
     "sharp": "^0.35.1"
   }
