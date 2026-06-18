@@ -16,11 +16,13 @@ ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
 
 # Step 4: Download and extract the real Android Command-line Tools
-RUN mkdir -p ${ANDROID_HOME}/cmdline-tools \
-    && curl -sS https://dl.google.com -o /tmp/cmdline.zip \
-    && unzip -q /tmp/cmdline.zip -d ${ANDROID_HOME}/cmdline-tools \
-    && mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest \
-    && rm /tmp/cmdline.zip
+RUN mkdir -p ${ANDROID_HOME}/cmdline-tools && \
+    curl -L https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip \
+    -o /tmp/cmdline.zip && \
+    unzip -q /tmp/cmdline.zip -d ${ANDROID_HOME}/cmdline-tools && \
+    mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools \
+       ${ANDROID_HOME}/cmdline-tools/latest && \
+    rm /tmp/cmdline.zip
 
 # Step 5: Accept Android SDK Licenses automatically
 RUN yes | sdkmanager --licenses
