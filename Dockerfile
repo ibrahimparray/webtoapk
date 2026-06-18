@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
 
 # 2. Install Android SDK Command-line tools
 RUN mkdir -p ${ANDROID_HOME}/cmdline-tools && \
-    curl -sS https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdline-tools.zip && \
+    curl -fL -sS "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip" -o /tmp/cmdline-tools.zip && \
     unzip -q /tmp/cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools && \
     mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest && \
     rm /tmp/cmdline-tools.zip
