@@ -32,8 +32,9 @@ RUN sdkmanager "platforms;android-34" "build-tools;34.0.0"
 WORKDIR /app
 
 # Copy package management files and install production dependencies
+# Copy package management files and install production dependencies
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --omit=dev
 
 # Copy the rest of your application code
 COPY . .
