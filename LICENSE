@@ -1,0 +1,111 @@
+MIT License
+
+Copyright (c) 2024 Website to APK Converter
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+THIRD-PARTY LICENSES
+
+This software includes or depends on the following third-party software:
+
+1. React (MIT License)
+   Copyright (c) Meta Platforms, Inc. and affiliates.
+
+2. Express (MIT License)
+   Copyright (c) 2009-2014 TJ Holowaychuk <tj@vision-media.ca>
+   Copyright (c) 2013-2014 Roman Shtylman <shtylman+expressjs@gmail.com>
+   Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+
+3. Tailwind CSS (MIT License)
+   Copyright (c) Tailwind Labs, Inc.
+
+4. Android Open Source Project (Apache License 2.0)
+   Copyright (C) The Android Open Source Project
+
+5. Kotlin (Apache License 2.0)
+   Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+
+6. Multer (MIT License)
+   Copyright (c) 2014 Hage Yaapa <http://www.hacksparrow.com>
+
+7. Vite (MIT License)
+   Copyright (c) 2019-present, Yuxi (Evan) You and Vite contributors
+
+All third-party software is used in accordance with their respective licenses.
+
+---
+
+DISCLAIMER
+
+This software is designed to convert websites into Android applications. Users
+are responsible for:
+
+1. Ensuring they have the legal right to create applications from the websites
+   they convert.
+
+2. Complying with all applicable laws and regulations regarding app distribution.
+
+3. Respecting intellectual property rights of website owners and content creators.
+
+4. Obtaining necessary permissions and licenses for commercial use.
+
+5. Ensuring their use of the converted applications complies with Google Play
+   Store policies and Android platform guidelines.
+
+The authors and contributors of this software are not responsible for any misuse,
+legal issues, or damages resulting from the use of this software.
+
+---
+
+COMMERCIAL USE
+
+This software is free for both personal and commercial use under the MIT License.
+However:
+
+- If you offer this as a paid service, you assume all liability.
+- You must comply with all third-party license requirements.
+- Attribution is appreciated but not required.
+
+---
+
+PRIVACY & DATA
+
+This software:
+- Does not collect or transmit user data to external servers
+- Processes all builds locally on your server
+- Does not include analytics or telemetry
+- Stores temporary files only during build process
+
+Users deploying this software are responsible for:
+- Implementing their own privacy policies
+- Complying with GDPR, CCPA, and other data protection regulations
+- Securing their server and protecting user data
+- Disclosing data collection practices to their users
+
+---
+
+SUPPORT
+
+This software is provided "as-is" with extensive documentation but without
+guaranteed support. Community contributions and improvements are welcome.
+
+For issues, questions, or contributions, please refer to the documentation
+files included in this distribution.

@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+output/
+*.apk
+*.aab
+
+# Android / Gradle
+.gradle/
+local.properties
+.idea/
+*.iml
+gradle/wrapper/gradle-wrapper.jar
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# Temp
+tmp/
+temp/
+*.tmp

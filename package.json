@@ -1,0 +1,10 @@
+{
+  "name": "website-to-apk-converter",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "cd frontend && npm install && cd ../backend && npm install",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "cd backend && node server.js"
+  }
+}
