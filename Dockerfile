@@ -1,40 +1,52 @@
-# Step 1: Use an official Gradle image with JDK 17 as the base
-FROM gradle:8.2-jdk17 AS builder
+# Use an explicit, highly stable Debian-based Node image
+FROM node:20-bullseye-slim
 
-USER root
+# Set environment variables for non-interactive installs and Android Paths
+ENV DEBIAN_FRONTEND=noninteractive
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV ANDROID_HOME=/opt/android-sdk
+ENV PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
 
-# Step 2: Install required system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# 1. Install Java 17, Curl, and essential build tools
+RUN apt-get update && apt-get install -y \
+    openjdk-17-jdk-headless \
     curl \
     unzip \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Step 3: Set environment variables for Android SDK
-ENV ANDROID_HOME=/opt/android-sdk
-ENV ANDROID_SDK_ROOT=/opt/android-sdk
-ENV PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
-
-# Step 4: Download and extract the real Android Command-line Tools
+# 2. Install Android SDK Command-line tools
 RUN mkdir -p ${ANDROID_HOME}/cmdline-tools && \
-    curl -L https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip \
-    -o /tmp/cmdline.zip && \
-    unzip -q /tmp/cmdline.zip -d ${ANDROID_HOME}/cmdline-tools && \
-    mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools \
-       ${ANDROID_HOME}/cmdline-tools/latest && \
-    rm /tmp/cmdline.zip
+    curl -sS https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdline-tools.zip && \
+    unzip -q /tmp/cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools && \
+    mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest && \
+    rm /tmp/cmdline-tools.zip
 
-# Step 5: Accept Android SDK Licenses automatically
+# 3. Automatically accept all Android SDK Licenses
 RUN yes | sdkmanager --licenses
 
-# Step 6: Install required Android platform tools and build targets
-RUN sdkmanager "platform-tools" \
-               "platforms;android-34" \
-               "build-tools;34.0.0"
+# 4. Install specific required Android Build Tools and Platform SDK
+RUN sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
-# Step 7: Set workspace and build project
+# Set up the working directory inside the container
 WORKDIR /app
+
+# Copy package management files and install production dependencies
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy the rest of your application code
 COPY . .
 
-# Run your Gradle build
-RUN gradle assembleRelease --no-daemon
+# 5. FIX THE BINARY FAILURE: Download the physical gradle-wrapper.jar dynamically
+RUN mkdir -p android-template/gradle/wrapper && \
+    curl -sS -L https://raw.githubusercontent.com/gradle/gradle/v8.5.0/gradle/wrapper/gradle-wrapper.jar -o android-template/gradle/wrapper/gradle-wrapper.jar
+
+# 6. Set explicit global execution permissions for Linux environment
+RUN chmod +x android-template/gradlew
+
+# Expose the port your Express server listens on
+EXPOSE 10000
+
+# Start the application
+CMD ["npm", "run", "server"]
