@@ -102,15 +102,35 @@ async function executeGradleBuild(buildDir, onLog) {
       try {
         require('fs').chmodSync(gradlewPath, '755');
       } catch (err) {
+        
         onLog(`⚠️ Warning: Could not set gradlew permissions: ${err.message}`);
       }
     }
 
-    onLog(`📝 Executing: ${gradlewCmd} assembleRelease in ${buildDir}`);
+   onLog(`📝 Executing: ${gradlewCmd} assembleRelease in ${buildDir}`);
 
-    const buildProcess = isWindows
-      ? spawn('cmd.exe', ['/c', gradlewCmd, 'assembleRelease'], { cwd: buildDir })
-      : spawn(gradlewCmd, ['assembleRelease'], { cwd: buildDir, timeout: 600000 });
+const buildProcess = isWindows
+  ? spawn('cmd.exe', [
+      '/c',
+      gradlewCmd,
+      'assembleRelease',
+      '--no-daemon',
+      '--max-workers=1'
+    ], {
+      cwd: buildDir
+    })
+  : spawn(gradlewCmd, [
+      'assembleRelease',
+      '--no-daemon',
+      '--max-workers=1'
+    ], {
+      cwd: buildDir,
+      timeout: 600000,
+      env: {
+        ...process.env,
+        GRADLE_OPTS: '-Xmx256m -XX:MaxMetaspaceSize=128m'
+      }
+    });
 
     let allOutput = '';
 
