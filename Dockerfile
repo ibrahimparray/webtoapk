@@ -4,6 +4,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV ANDROID_HOME=/opt/android-sdk
 ENV PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
+ENV GRADLE_OPTS="-Xmx256m -XX:MaxMetaspaceSize=128m"
+ENV NODE_OPTIONS="--max-old-space-size=256"
 
 RUN apt-get update && apt-get install -y \
     openjdk-17-jdk-headless \
